@@ -1,6 +1,8 @@
 ﻿using System.Net.Sockets;
 using System.Text;
 
+#pragma warning disable CA1062
+#pragma warning disable CA1305
 #pragma warning disable IDE0058
 
 namespace Crypto;

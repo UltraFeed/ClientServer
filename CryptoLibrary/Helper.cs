@@ -1,11 +1,13 @@
 ﻿using System.Security.Cryptography;
 
+#pragma warning disable CA1051
+
 namespace Crypto;
 
-public class Encryption
+public static class Encryption
 {
 #pragma warning disable CA2211
-    public static Algorithm algorithm = Algorithm.RSA;
+    public static Algorithm algo = Algorithm.RSA;
 #pragma warning restore CA2211
     public enum Algorithm
     {
@@ -14,7 +16,7 @@ public class Encryption
     }
 }
 
-public class Helper
+public class Helper : IDisposable
 {
 
     public const int rsaKeySize = 2048;
@@ -23,11 +25,11 @@ public class Helper
 
     public byte [] EncryptMessage (byte [] message)
     {
-        if (Encryption.algorithm == Encryption.Algorithm.None)
+        if (Encryption.algo == Encryption.Algorithm.None)
         {
             return message;
         }
-        else if (Encryption.algorithm == Encryption.Algorithm.RSA)
+        else if (Encryption.algo == Encryption.Algorithm.RSA)
         {
             using MemoryStream ms = new();
             using CryptoStream cs = new(ms, aes.CreateEncryptor(), CryptoStreamMode.Write);
@@ -43,11 +45,11 @@ public class Helper
 
     public byte [] DecryptMessage (byte [] message)
     {
-        if (Encryption.algorithm == Encryption.Algorithm.None)
+        if (Encryption.algo == Encryption.Algorithm.None)
         {
             return message;
         }
-        else if (Encryption.algorithm == Encryption.Algorithm.RSA)
+        else if (Encryption.algo == Encryption.Algorithm.RSA)
         {
             using MemoryStream ms = new(message);
             using CryptoStream cs = new(ms, aes.CreateDecryptor(), CryptoStreamMode.Read);
@@ -59,5 +61,25 @@ public class Helper
         {
             throw new ArgumentException("Algorithm not supported");
         }
+    }
+
+    public void Dispose ()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose (bool disposing)
+    {
+        if (disposing)
+        {
+            rsa.Dispose();
+            aes.Dispose();
+        }
+    }
+
+    ~Helper ()
+    {
+        Dispose(false);
     }
 }

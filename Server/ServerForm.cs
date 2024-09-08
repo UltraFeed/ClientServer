@@ -5,6 +5,7 @@ using System.Text;
 using Crypto;
 
 #pragma warning disable CA1031
+#pragma warning disable CA2213
 #pragma warning disable CS8618
 #pragma warning disable IDE0058
 
@@ -33,7 +34,7 @@ public partial class ServerForm : Form
             stream = client.GetStream();
             AppendText("Клиент подключился");
 
-            if (Encryption.algorithm == Encryption.Algorithm.RSA)
+            if (Encryption.algo == Encryption.Algorithm.RSA)
             {
                 helper.aes.Padding = PaddingMode.PKCS7;
                 helper.rsa.PersistKeyInCsp = false;

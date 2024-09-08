@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace Client
+﻿namespace Client
 {
     partial class ClientForm
     {
