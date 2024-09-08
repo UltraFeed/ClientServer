@@ -34,14 +34,14 @@ public partial class ServerForm : Form
             stream = client.GetStream();
             AppendText("Клиент подключился");
 
-            if (Encryption.algo == Encryption.Algorithm.RSA)
+            if (MessageEncryption.algo == MessageEncryption.Algorithm.RSA)
             {
                 helper.aes.Padding = PaddingMode.PKCS7;
                 helper.rsa.PersistKeyInCsp = false;
                 string publicKey = helper.rsa.ToXmlString(false);
                 PublicKey.SendPublicKey(stream, publicKey);
                 AppendText($"Открытый ключ отправлен: {publicKey}");
-                string logs = PublicKey.ReceiveSessionKeyAndIV(stream, helper);
+                string logs = PublicKey.ReceiveSessionKey(stream, helper);
                 AppendText(logs);
             }
 

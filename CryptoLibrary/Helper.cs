@@ -4,7 +4,7 @@
 
 namespace Crypto;
 
-public static class Encryption
+public static class MessageEncryption
 {
 #pragma warning disable CA2211
     public static Algorithm algo = Algorithm.RSA;
@@ -25,11 +25,11 @@ public class Helper : IDisposable
 
     public byte [] EncryptMessage (byte [] message)
     {
-        if (Encryption.algo == Encryption.Algorithm.None)
+        if (MessageEncryption.algo == MessageEncryption.Algorithm.None)
         {
             return message;
         }
-        else if (Encryption.algo == Encryption.Algorithm.RSA)
+        else if (MessageEncryption.algo == MessageEncryption.Algorithm.RSA)
         {
             using MemoryStream ms = new();
             using CryptoStream cs = new(ms, aes.CreateEncryptor(), CryptoStreamMode.Write);
@@ -45,11 +45,11 @@ public class Helper : IDisposable
 
     public byte [] DecryptMessage (byte [] message)
     {
-        if (Encryption.algo == Encryption.Algorithm.None)
+        if (MessageEncryption.algo == MessageEncryption.Algorithm.None)
         {
             return message;
         }
-        else if (Encryption.algo == Encryption.Algorithm.RSA)
+        else if (MessageEncryption.algo == MessageEncryption.Algorithm.RSA)
         {
             using MemoryStream ms = new(message);
             using CryptoStream cs = new(ms, aes.CreateDecryptor(), CryptoStreamMode.Read);

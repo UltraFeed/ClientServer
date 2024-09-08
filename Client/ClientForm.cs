@@ -31,12 +31,12 @@ public partial class ClientForm : Form
             stream = client.GetStream();
             AppendText("Подключение к серверу выполнено");
 
-            if (Encryption.algo == Encryption.Algorithm.RSA)
+            if (MessageEncryption.algo == MessageEncryption.Algorithm.RSA)
             {
                 helper.aes.Padding = PaddingMode.PKCS7;
                 string publicKey = PublicKey.ReceivePublicKey(stream);
                 AppendText($"Получен открытый ключ: {publicKey}");
-                string logs = PublicKey.SendSessionKeyAndIV(stream, helper, publicKey);
+                string logs = PublicKey.SendSessionKey(stream, helper, publicKey);
                 AppendText(logs);
             }
 
