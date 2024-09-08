@@ -85,7 +85,7 @@ public partial class ClientForm : Form
         await stream.WriteAsync(encryptedMessage).ConfigureAwait(false);
     }
 
-    private async void ButtonSend_Click (object sender, EventArgs e)
+    private async void ButtonSend_Click (object? sender, EventArgs e)
     {
         string message = textBoxInput.Text;
         textBoxInput.Clear();

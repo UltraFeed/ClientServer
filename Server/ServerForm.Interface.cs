@@ -1,20 +1,14 @@
-﻿namespace Server;
+﻿#pragma warning disable CA1303
+#pragma warning disable CA2213
+#pragma warning disable IDE0058
 
-partial class ServerForm
+namespace Server;
+
+public partial class ServerForm
 {
-    private System.ComponentModel.IContainer components = null;
     private TextBox textBoxMessages;
     private TextBox textBoxInput;
     private Button buttonSend;
-
-    protected override void Dispose (bool disposing)
-    {
-        if (disposing && (components != null))
-        {
-            components.Dispose();
-        }
-        base.Dispose(disposing);
-    }
 
     private void InitializeComponent ()
     {
