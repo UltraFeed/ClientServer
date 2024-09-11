@@ -42,7 +42,6 @@ public static class PublicKey
         logs.AppendLine(Environment.NewLine + $"Сеансовый ключ зашифрован и отправлен: {BitConverter.ToString(encryptedSessionKey)}");
         stream.Write(iv);
         return logs.ToString();
-
     }
 
     public static void SendPublicKey (NetworkStream stream, string publicKey)
