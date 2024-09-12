@@ -70,8 +70,8 @@ public partial class ClientForm
         ClientSize = new Size(700, 500);
         MinimumSize = new Size(300, 200);
 
-        buttonSend.Click += ButtonSend_Click;
         FormClosing += OnFormClosing;
+        buttonSend.Click += ButtonSend_Click;
         textBoxInput.KeyDown += TextBoxInput_KeyDown;
     }
 }

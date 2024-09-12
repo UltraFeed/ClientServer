@@ -109,7 +109,7 @@ public partial class ClientForm : Form
         Environment.Exit(0);
     }
 
-    private void TextBoxInput_KeyDown (object sender, KeyEventArgs e)
+    private void TextBoxInput_KeyDown (object? sender, KeyEventArgs e)
     {
         if (e.KeyCode == Keys.Enter)
         {
