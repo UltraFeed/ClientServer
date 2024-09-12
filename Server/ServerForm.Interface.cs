@@ -59,8 +59,6 @@ public partial class ServerForm
             UseVisualStyleBackColor = true
         };
 
-        buttonSend.Click += ButtonSend_Click;
-
         inputPanel.Controls.Add(textBoxInput, 0, 0);
         inputPanel.Controls.Add(buttonSend, 1, 0);
 
@@ -71,6 +69,9 @@ public partial class ServerForm
 
         ClientSize = new Size(700, 500);
         MinimumSize = new Size(300, 200);
+
         FormClosing += OnFormClosing;
+        buttonSend.Click += ButtonSend_Click;
+        textBoxInput.KeyDown += TextBoxInput_KeyDown;
     }
 }

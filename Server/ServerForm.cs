@@ -113,4 +113,13 @@ public partial class ServerForm : Form
     {
         Environment.Exit(0);
     }
+
+    private void TextBoxInput_KeyDown (object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter)
+        {
+            e.SuppressKeyPress = true;
+            buttonSend.PerformClick();
+        }
+    }
 }
