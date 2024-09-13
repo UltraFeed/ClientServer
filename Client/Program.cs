@@ -6,7 +6,7 @@ internal static class Program
     {
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
-        using ClientForm form = new();
+        using ClientForm form = new("Client1");
         Application.Run(form);
     }
 }

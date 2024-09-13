@@ -9,11 +9,11 @@ public partial class ClientForm
     private TextBox textBoxInput;
     private Button buttonSend;
 
-    private void InitializeComponent ()
+    private void InitializeComponent (string name)
     {
         AutoScaleMode = AutoScaleMode.Dpi;
         FormBorderStyle = FormBorderStyle.Sizable;
-        Text = "Client";
+        Text = name;
 
         TableLayoutPanel mainLayout = new()
         {

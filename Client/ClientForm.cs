@@ -17,9 +17,9 @@ public partial class ClientForm : Form
     private readonly RSACryptoServiceProvider rsa = new(rsaKeySize);
     private readonly Aes aes = Aes.Create();
 
-    public ClientForm ()
+    public ClientForm (string name)
     {
-        InitializeComponent();
+        InitializeComponent(name);
         InitializeNetwork();
     }
 
