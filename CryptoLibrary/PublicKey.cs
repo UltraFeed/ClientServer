@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -12,16 +11,16 @@ namespace Crypto;
 
 public static class PublicKey
 {
-    public static string ReceiveSessionKey (NetworkStream stream, Helper helper)
+    public static string ReceiveSessionKey (NetworkStream stream, Aes aes, RSACryptoServiceProvider rsa)
     {
         StringBuilder logs = new();
         byte [] encryptedSessionKey = new byte [256];
         stream.Read(encryptedSessionKey);
-        byte [] sessionKey = helper.rsa.Decrypt(encryptedSessionKey, false);
-        helper.aes.Key = sessionKey;
-        byte [] iv = new byte [helper.aes.BlockSize / 8];
+        byte [] sessionKey = rsa.Decrypt(encryptedSessionKey, false);
+        aes.Key = sessionKey;
+        byte [] iv = new byte [aes.BlockSize / 8];
         stream.Read(iv);
-        helper.aes.IV = iv;
+        aes.IV = iv;
 
         // Генерация соли на основе текущего времени
         string salt = DateTime.UtcNow.ToString("yyyyMMddHHmm"); // Точность до минут
@@ -42,17 +41,17 @@ public static class PublicKey
         return logs.ToString();
     }
 
-    public static string SendSessionKey (NetworkStream stream, Helper helper, string publicKey)
+    public static string SendSessionKey (NetworkStream stream, Aes aes, RSACryptoServiceProvider rsa, string publicKey)
     {
         StringBuilder logs = new();
-        helper.rsa.FromXmlString(publicKey);
-        helper.aes.GenerateKey();
-        helper.aes.GenerateIV();
+        rsa.FromXmlString(publicKey);
+        aes.GenerateKey();
+        aes.GenerateIV();
 
-        byte [] sessionKey = helper.aes.Key;
-        byte [] iv = helper.aes.IV;
+        byte [] sessionKey = aes.Key;
+        byte [] iv = aes.IV;
 
-        byte [] encryptedSessionKey = helper.rsa.Encrypt(sessionKey, false);
+        byte [] encryptedSessionKey = rsa.Encrypt(sessionKey, false);
         stream.Write(encryptedSessionKey);
 
         logs.AppendLine($"Сеансовый ключ создан: {BitConverter.ToString(sessionKey)}");
@@ -92,9 +91,9 @@ public static class PublicKey
         stream.Write(publicKeyBytes);
     }
 
-    public static string ReceivePublicKey (NetworkStream stream)
+    public static string ReceivePublicKey (NetworkStream stream, int rsaKeySize)
     {
-        byte [] publicKeyBytes = new byte [Helper.rsaKeySize];
+        byte [] publicKeyBytes = new byte [rsaKeySize];
         int bytesRead = stream.Read(publicKeyBytes);
         string publicKey = Encoding.UTF8.GetString(publicKeyBytes, 0, bytesRead);
         return publicKey;

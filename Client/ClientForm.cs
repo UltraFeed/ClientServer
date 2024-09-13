@@ -13,7 +13,9 @@ namespace Client;
 public partial class ClientForm : Form
 {
     private static NetworkStream stream;
-    private readonly Helper helper = new();
+    private const int rsaKeySize = 2048;
+    private readonly RSACryptoServiceProvider rsa = new(rsaKeySize);
+    private readonly Aes aes = Aes.Create();
 
     public ClientForm ()
     {
@@ -33,10 +35,11 @@ public partial class ClientForm : Form
 
             if (MessageEncryption.algo == MessageEncryption.Algorithm.RSA)
             {
-                helper.aes.Padding = PaddingMode.PKCS7;
-                string publicKey = PublicKey.ReceivePublicKey(stream);
+                aes.Padding = PaddingMode.PKCS7;
+                rsa.PersistKeyInCsp = false;
+                string publicKey = PublicKey.ReceivePublicKey(stream, rsaKeySize);
                 AppendText($"Получен открытый ключ: {publicKey}");
-                string logs = PublicKey.SendSessionKey(stream, helper, publicKey);
+                string logs = PublicKey.SendSessionKey(stream, aes, rsa, publicKey);
                 AppendText(logs);
             }
 
@@ -65,7 +68,7 @@ public partial class ClientForm : Form
                 byte [] encryptedMessage = new byte [encryptedMessageLength];
                 await stream.ReadAsync(encryptedMessage).ConfigureAwait(false);
 
-                byte [] decryptedMessage = helper.DecryptMessage(encryptedMessage);
+                byte [] decryptedMessage = Helper.DecryptMessage(encryptedMessage, aes);
                 AppendText($"Сервер: {Encoding.UTF8.GetString(decryptedMessage)}");
             }
             catch (Exception ex)
@@ -79,7 +82,7 @@ public partial class ClientForm : Form
     private async Task SendMessageAsync (string message)
     {
         AppendText($"Вы: {message}");
-        byte [] encryptedMessage = helper.EncryptMessage(Encoding.UTF8.GetBytes(message));
+        byte [] encryptedMessage = Helper.EncryptMessage(Encoding.UTF8.GetBytes(message), aes);
         byte [] lengthBuffer = BitConverter.GetBytes(encryptedMessage.Length);
         await stream.WriteAsync(lengthBuffer).ConfigureAwait(false);
         await stream.WriteAsync(encryptedMessage).ConfigureAwait(false);
@@ -101,20 +104,6 @@ public partial class ClientForm : Form
         else
         {
             textBoxMessages.AppendText(Environment.NewLine + text + Environment.NewLine);
-        }
-    }
-
-    private void OnFormClosing (object? sender, FormClosingEventArgs e)
-    {
-        Environment.Exit(0);
-    }
-
-    private void TextBoxInput_KeyDown (object? sender, KeyEventArgs e)
-    {
-        if (e.KeyCode == Keys.Enter)
-        {
-            e.SuppressKeyPress = true;
-            buttonSend.PerformClick();
         }
     }
 }

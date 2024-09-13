@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-#pragma warning disable CA1051
+#pragma warning disable CA1062
 
 namespace Crypto;
 
@@ -16,14 +16,10 @@ public static class MessageEncryption
     }
 }
 
-public class Helper : IDisposable
+public static class Helper
 {
 
-    public const int rsaKeySize = 2048;
-    public readonly RSACryptoServiceProvider rsa = new(rsaKeySize);
-    public readonly Aes aes = Aes.Create();
-
-    public byte [] EncryptMessage (byte [] message)
+    public static byte [] EncryptMessage (byte [] message, Aes aes)
     {
         if (MessageEncryption.algo == MessageEncryption.Algorithm.None)
         {
@@ -43,7 +39,7 @@ public class Helper : IDisposable
         }
     }
 
-    public byte [] DecryptMessage (byte [] message)
+    public static byte [] DecryptMessage (byte [] message, Aes aes)
     {
         if (MessageEncryption.algo == MessageEncryption.Algorithm.None)
         {
@@ -61,25 +57,5 @@ public class Helper : IDisposable
         {
             throw new ArgumentException("Algorithm not supported");
         }
-    }
-
-    public void Dispose ()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose (bool disposing)
-    {
-        if (disposing)
-        {
-            rsa.Dispose();
-            aes.Dispose();
-        }
-    }
-
-    ~Helper ()
-    {
-        Dispose(false);
     }
 }

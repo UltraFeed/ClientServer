@@ -1,5 +1,4 @@
 ﻿#pragma warning disable CA1303
-#pragma warning disable CA2213
 #pragma warning disable IDE0058
 
 namespace Server;
@@ -73,5 +72,19 @@ public partial class ServerForm
         FormClosing += OnFormClosing;
         buttonSend.Click += ButtonSend_Click;
         textBoxInput.KeyDown += TextBoxInput_KeyDown;
+    }
+
+    private void OnFormClosing (object? sender, FormClosingEventArgs e)
+    {
+        Environment.Exit(0);
+    }
+
+    private void TextBoxInput_KeyDown (object? sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter)
+        {
+            e.SuppressKeyPress = true;
+            buttonSend.PerformClick();
+        }
     }
 }
