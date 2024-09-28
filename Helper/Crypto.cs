@@ -2,7 +2,7 @@
 
 #pragma warning disable CA1062
 
-namespace Crypto;
+namespace Helper;
 
 public static class MessageEncryption
 {
@@ -16,7 +16,7 @@ public static class MessageEncryption
     }
 }
 
-public static class Helper
+public static class Crypto
 {
 
     public static byte [] EncryptMessage (byte [] message, Aes aes)
