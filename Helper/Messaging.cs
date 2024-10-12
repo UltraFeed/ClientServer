@@ -13,7 +13,7 @@ public class Message
     public string? ReceiverUsername { get; set; } // Юзернейм получателя, может быть null для broadcast
     public string? Content { get; set; } // Содержание сообщения
 }
-
+//123123
 public enum MessageType
 {
     ClientsList,
