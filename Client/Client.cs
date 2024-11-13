@@ -1,9 +1,4 @@
-﻿using System.Net.WebSockets;
-using System.Text;
-using System.Text.Json;
-using Helper;
-
-#pragma warning disable CA1303
+﻿#pragma warning disable CA1303
 #pragma warning disable CA2000
 #pragma warning disable CA2213
 #pragma warning disable CS8601
@@ -12,9 +7,14 @@ using Helper;
 #pragma warning disable CS8618
 #pragma warning disable IDE0058
 
+using System.Net.WebSockets;
+using System.Text;
+using System.Text.Json;
+using Helper;
+
 namespace Client;
 
-public partial class ChatForm : Form
+internal sealed class ChatForm : Form
 {
 	private ClientWebSocket _webSocket;
 	private readonly string _username;
@@ -95,7 +95,7 @@ public partial class ChatForm : Form
 				}
 				else if (message.Type == MessageType.Text)
 				{
-					Invoke(new Action(() => chatTextBox.AppendText($"[{message.SenderUsername}]: {message.Content}{Environment.NewLine}")));
+					await InvokeAsync(new Action(() => chatTextBox.AppendText($"[{message.SenderUsername}]: {message.Content}{Environment.NewLine}"))).ConfigureAwait(false);
 				}
 			}
 		}

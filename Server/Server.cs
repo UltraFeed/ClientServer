@@ -1,15 +1,15 @@
-﻿using System.Collections.Concurrent;
+﻿#pragma warning disable CA1031
+#pragma warning disable CA1303
+#pragma warning disable CS8629
+#pragma warning disable IDE0058
+
+using System.Collections.Concurrent;
 using System.Globalization;
 using System.Net;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 using Helper;
-
-#pragma warning disable CA1031
-#pragma warning disable CA1303
-#pragma warning disable CS8629
-#pragma warning disable IDE0058
 
 namespace Server;
 

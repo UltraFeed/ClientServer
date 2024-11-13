@@ -1,11 +1,10 @@
-﻿using System.Net.WebSockets;
-using System.Security.Cryptography;
-using System.Text;
-
-#pragma warning disable CA1062
+﻿#pragma warning disable CA1062
 #pragma warning disable CA1305
 #pragma warning disable IDE0058
-#pragma warning disable IDE0305
+
+using System.Net.WebSockets;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Helper;
 

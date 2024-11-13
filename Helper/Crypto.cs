@@ -1,6 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿#pragma warning disable CA1062
 
-#pragma warning disable CA1062
+using System.Security.Cryptography;
 
 namespace Helper;
 
